@@ -340,7 +340,7 @@ public class FORM_INPUT_BARANG extends javax.swing.JFrame {
 
     private void jButton_kembaliActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_kembaliActionPerformed
         // TODO add your handling code here:
-        new FORM_MENU().setVisible(true);
+        new FORM_MENU2().setVisible(true);
         this.dispose();
     }//GEN-LAST:event_jButton_kembaliActionPerformed
 

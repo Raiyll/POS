@@ -3,19 +3,78 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 package Form;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.Statement;
+import javax.swing.table.DefaultTableModel;
+
 
 /**
  *
  * @author ahmad
  */
 public class FORM_HISTORY extends javax.swing.JFrame {
+    
 
     /**
      * Creates new form FORM_HISTORY
      */
-    public FORM_HISTORY() {
-        initComponents();
+    
+   public FORM_HISTORY() {
+    initComponents();
+
+    jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        new Object [][] {},
+        new String [] {
+            "Tanggal",
+            "Kode",
+            "Nama Barang",
+            "Harga",
+            "Satuan",
+            "Jumlah",
+            "Subtotal",
+            "Total",
+            "Bayar",
+            "Kembalian"
+        }
+    ));
+
+    tampilData();   
+}
+
+
+    private void tampilData() {
+    DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+    model.setRowCount(0);
+
+    try {
+        Connection conn = DriverManager.getConnection(
+            "jdbc:mysql://localhost:3306/pos", "root", ""
+        );
+
+        Statement stmt = conn.createStatement();
+        ResultSet rs = stmt.executeQuery("SELECT * FROM history_transaksi ORDER BY tanggal DESC");
+
+        while (rs.next()) {
+            model.addRow(new Object[]{
+                rs.getString("tanggal"),
+                rs.getString("kode_barang"),
+                rs.getString("nama_barang"),
+                rs.getDouble("harga"),
+                rs.getString("satuan"),
+                rs.getInt("jumlah"),
+                rs.getDouble("subtotal"),
+                rs.getDouble("total"),
+                rs.getDouble("bayar"),
+                rs.getDouble("kembalian")
+            });
+        }
+
+    } catch (Exception e) {
+        javax.swing.JOptionPane.showMessageDialog(this, "Gagal tampil data: " + e.getMessage());
     }
+}
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -26,21 +85,90 @@ public class FORM_HISTORY extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jTable1 = new javax.swing.JTable();
+        jLabel1 = new javax.swing.JLabel();
+        jButton_Keluar = new javax.swing.JButton();
+        jButton_Kembali = new javax.swing.JButton();
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+
+        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        jScrollPane1.setViewportView(jTable1);
+
+        jLabel1.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        jLabel1.setText("RIWAYAT PENJUALAN");
+
+        jButton_Keluar.setText("Keluar");
+        jButton_Keluar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton_KeluarActionPerformed(evt);
+            }
+        });
+
+        jButton_Kembali.setText("Kembali");
+        jButton_Kembali.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton_KembaliActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 728, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(406, Short.MAX_VALUE)
+                .addComponent(jLabel1)
+                .addGap(351, 351, 351))
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane1)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jButton_Keluar, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(jButton_Kembali, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 475, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addGap(21, 21, 21)
+                .addComponent(jLabel1)
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 467, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jButton_Keluar)
+                    .addComponent(jButton_Kembali))
+                .addContainerGap(61, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jButton_KembaliActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_KembaliActionPerformed
+        // TODO add your handling code here:
+        new FORM_MENU2().setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_jButton_KembaliActionPerformed
+
+    private void jButton_KeluarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_KeluarActionPerformed
+        // TODO add your handling code here:
+        System.exit(0);
+    }//GEN-LAST:event_jButton_KeluarActionPerformed
 
     /**
      * @param args the command line arguments
@@ -78,5 +206,10 @@ public class FORM_HISTORY extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton jButton_Keluar;
+    private javax.swing.JButton jButton_Kembali;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTable jTable1;
     // End of variables declaration//GEN-END:variables
 }
